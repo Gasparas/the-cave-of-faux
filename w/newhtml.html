@@ -1,0 +1,98 @@
+var createScene = function () {
+    var scene = new BABYLON.Scene(engine);
+    scene.gravity = new BABYLON.Vector3(0, -0.9, 0);
+    scene.collisionsEnabled = true;
+
+    // Lights
+    var light2 = new BABYLON.HemisphericLight("hemi", new BABYLON.Vector3(0, 1, 0), scene);
+    light2.intensity = 0.8;
+
+    // Need a free camera for collisions
+    var camera = new BABYLON.FreeCamera("FreeCamera", new BABYLON.Vector3(-5, -8, -20), scene);
+    camera.target = new BABYLON.Vector3(30, 0, 20);
+    camera.attachControl(canvas, true);
+
+    camera.keysUp.push(87); //WASD controls
+    camera.keysDown.push(83);
+    camera.keysLeft.push(65);
+    camera.keysRight.push(68);
+
+    camera.inertia=0.2;
+    camera.speed=12;
+    camera.angularSensibility=500;
+    camera.fov=1;
+
+    // scene.onPointerDown = function (evt) { //free mouse look
+    //         canvas.requestPointerLock = canvas.requestPointerLock || canvas.msRequestPointerLock || canvas.mozRequestPointerLock || canvas.webkitRequestPointerLock || false;
+    //         if (canvas.requestPointerLock) {
+    //             canvas.requestPointerLock();
+    //         }
+    // };
+
+    //Ground
+    var ground = BABYLON.Mesh.CreatePlane("ground", 100.0, scene);
+    ground.material = new BABYLON.StandardMaterial("groundMat", scene);
+    ground.material.diffuseColor = new BABYLON.Color3(1, 1, 1);
+    ground.material.backFaceCulling = false;
+    ground.position = new BABYLON.Vector3(5, -10, -15);
+    ground.rotation = new BABYLON.Vector3(Math.PI / 2, 0, 0);
+    ground.material =  new BABYLON.StandardMaterial("MatG", scene);
+    ground.material.diffuseColor = new BABYLON.Color3(0,1,0);
+
+    // Ground is collision-active.
+    ground.checkCollisions = true;
+
+
+    // Camera is collision-active.
+    camera.checkCollisions = true;
+    // push against collision-active ground
+    camera.applyGravity = true;
+    // Cam collision-ellipsoid size - e.g. your player's size
+    // Important for stairs-heights.
+    camera.ellipsoid = new BABYLON.Vector3(1, 1, 1);
+
+
+    function createStairs (h, w, d, k, startPoint) {
+            var startPoint = startPoint || BABYLON.Vector3.Zero();
+
+            var boxes = [];
+
+            for (var i = 0; i < k; i++) {
+                var b = BABYLON.MeshBuilder.CreateBox("step" + i, {
+                    width: w, 
+                    depth: d, 
+                    height: h*(i+1), 
+                    updatable: true, 
+                    sideOrientation: BABYLON.Mesh.DOUBLESIDE
+                    }, scene);
+                    b.position.x = startPoint.x + w*(i+1);
+                    b.position.y = startPoint.y + 0.5*h*(i+1);
+                boxes.push(b);
+            }
+
+            var stairs = BABYLON.Mesh.MergeMeshes(boxes, true);
+            
+            stairs.checkCollisions = true;
+
+            return stairs;
+        }
+
+        var stairs = createStairs(0.3, 1, 10, 20, new BABYLON.Vector3(10, -10, 0));
+
+        var box = BABYLON.MeshBuilder.CreateBox("crate", {height:0.8, width:4, depth: 20}, scene);
+        box.position = new BABYLON.Vector3(10, -9.9, -10);  
+              box.checkCollisions = true;
+
+// Import with Asset Manager
+        var assetsManager = new BABYLON.AssetsManager(scene);
+	var meshTask = assetsManager.addMeshTask("skull", "", "https://gasparas.github.io/babjs-template/assets/", "test-climb3.babylon");
+	
+	meshTask.onSuccess = function (task) {
+	    task.loadedMeshes[0].position = new BABYLON.Vector3(1, -9.95, 1);
+            task.loadedMeshes[0].checkCollisions = true;
+	}
+        assetsManager.load();
+      
+
+    return scene;
+}
