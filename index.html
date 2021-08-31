@@ -1,100 +1,117 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
 
-    <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-        <title>Babylon Template</title>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <title>Babylon Template</title>
+  <script src="https://cdn.babylonjs.com/babylon.js"></script>
+  <!-- <script src="https://cdn.babylonjs.com/loaders/babylonjs.loaders.min.js"></script>-->
+  <script src="https://cdn.babylonjs.com/loaders/babylon.glTF2FileLoader.js"></script>
 
-        <style>
-            html, body {
-                overflow: hidden;
-                width: 100%;
-                height: 100%;
-                margin: 0;
-                padding: 0;
-            }
+  <script src="https://code.jquery.com/pep/0.4.3/pep.js"></script>
+  <link rel="stylesheet" href="./css/styles.css">
+</head>
 
-            #renderCanvas {
-                width: 100%;
-                height: 100%;
-                touch-action: none;
-            }
-        </style>
+<body>
 
-        <script src="https://cdn.babylonjs.com/babylon.js"></script>
-        <script src="https://cdn.babylonjs.com/loaders/babylonjs.loaders.min.js"></script>
-        <script src="https://code.jquery.com/pep/0.4.3/pep.js"></script>
-    </head>
+  <canvas id="renderCanvas" touch-action="none"></canvas> <!-- touch-action="none" for best results from PEP -->
 
-   <body>
-
-    <canvas id="renderCanvas" touch-action="none"></canvas> <!-- touch-action="none" for best results from PEP -->
-
-    <script>
-        
+  <script>
     const canvas = document.getElementById("renderCanvas"); // Get the canvas element
-        const engine = new BABYLON.Engine(canvas, true); // Generate the BABYLON 3D engine
+    const engine = new BABYLON.Engine(canvas, true); // Generate the BABYLON 3D engine
 
-        // Add your code here matching the playground format
-var createScene = function () {
-    var scene = new BABYLON.Scene(engine);
+    // Add your code here matching the playground format
+    var createScene = function() {
+      var scene = new BABYLON.Scene(engine);
 
-    // Lights
-    var light0 = new BABYLON.DirectionalLight("Omni", new BABYLON.Vector3(-2, -5, 2), scene);
-    var light1 = new BABYLON.PointLight("Omni", new BABYLON.Vector3(2, -5, -2), scene);
+      // Lights
+      var light0 = new BABYLON.DirectionalLight("Omni", new BABYLON.Vector3(-2, -5, 2), scene);
+      var light1 = new BABYLON.PointLight("Omni", new BABYLON.Vector3(2, -5, -2), scene);
 
-    // Need a free camera for collisions
-    var camera = new BABYLON.FreeCamera("FreeCamera", new BABYLON.Vector3(0, -8, -20), scene);
-    camera.attachControl(canvas, true);
+      // Need a free camera for collisions
+      var camera = new BABYLON.FreeCamera("FreeCamera", new BABYLON.Vector3(0, 5, -20), scene);
+      camera.attachControl(canvas, true);
 
-    //Ground
-    var ground = BABYLON.Mesh.CreatePlane("ground", 20.0, scene);
-    ground.material = new BABYLON.StandardMaterial("groundMat", scene);
-    ground.material.diffuseColor = new BABYLON.Color3(1, 1, 1);
-    ground.material.backFaceCulling = false;
-    ground.position = new BABYLON.Vector3(5, -10, -15);
-    ground.rotation = new BABYLON.Vector3(Math.PI / 2, 0, 0);
+      camera.speed = 1;
+      camera.minZ = 0.5;
+      camera.fov = 1.3;
+      camera.inertia = 0.6;
 
-    //Simple crate
-    var box = BABYLON.Mesh.CreateBox("crate", 2, scene);
-    box.material = new BABYLON.StandardMaterial("Mat", scene);
-    box.material.diffuseTexture = new BABYLON.Texture("textures/crate.png", scene);
-    box.material.diffuseTexture.hasAlpha = true;
-    box.position = new BABYLON.Vector3(5, -9, -10);
+      // WASD Controls
+      camera.keysUp.push(87);
+      camera.keysDown.push(83);
+      camera.keysRight.push(68);
+      camera.keysLeft.push(65);
 
-    //Set gravity for the scene (G force like, on Y-axis)
-    scene.gravity = new BABYLON.Vector3(0, -0.9, 0);
+      // Ground
+      var ground = BABYLON.Mesh.CreatePlane("ground", 20.0, scene);
+      ground.material = new BABYLON.StandardMaterial("groundMat", scene);
+      ground.material.diffuseColor = new BABYLON.Color3(1, 1, 1);
+      ground.material.backFaceCulling = false;
+      ground.position = new BABYLON.Vector3(5, -10, -15);
+      ground.rotation = new BABYLON.Vector3(Math.PI / 2, 0, 0);
 
-    // Enable Collisions
-    scene.collisionsEnabled = true;
+      // Simple crate
+      var box = BABYLON.Mesh.CreateBox("crate", 2, scene);
+      box.material = new BABYLON.StandardMaterial("Mat", scene);
+      box.material.diffuseTexture = new BABYLON.Texture("textures/crate.png", scene);
+      box.material.diffuseTexture.hasAlpha = true;
+      box.position = new BABYLON.Vector3(5, -9, -10);
 
-    //Then apply collisions and gravity to the active camera
-    camera.checkCollisions = true;
-    camera.applyGravity = true;
+      // Import
+      //var test = BABYLON.SceneLoader.Append("glb/", "blue-box.glb", scene, function (scene) {
 
-    //Set the ellipsoid around the camera (e.g. your player's size)
-    camera.ellipsoid = new BABYLON.Vector3(1.2, 1, 1.2);
+/*
+      var test = BABYLON.AbstractMesh;
+      // Define the variable in the global scope.
+      var skullMesh;
+      test = BABYLON.SceneLoader.ImportMesh("", "https://playground.babylonjs.com/scenes/", "skull.babylon", scene, function (scene) {
+          skullMesh = scene[0];
+      });
+      skullMesh.position.x = 10;
 
-    //finally, say which mesh will be collisionable
-    ground.checkCollisions = true;
-    box.checkCollisions = true;
+      BABYLON.SceneLoader.ImportMesh("", "assets/", "scene1.babylon", scene, function (meshes) {
+        mesh = meshes[0];
 
-    return scene;
-}
+        mesh.checkCollisions = true;
+      });
+*/
 
-        const scene = createScene(); //Call the createScene function
+      BABYLON.SceneLoader.Append( "https://playground.babylonjs.com/scenes/", "skull.babylon", scene);
 
-        // Register a render loop to repeatedly render the scene
-        engine.runRenderLoop(function () {
-                scene.render();
-        });
+      // Set gravity for the scene (G force like, on Y-axis)
+      scene.gravity = new BABYLON.Vector3(0, -0.9, 0);
 
-        // Watch for browser/canvas resize events
-        window.addEventListener("resize", function () {
-                engine.resize();
-        });
-    </script>
+      // Enable Collisions
+      scene.collisionsEnabled = true;
 
-   </body>
+      // Then apply collisions and gravity to the active camera
+      camera.checkCollisions = true;
+      camera.applyGravity = true;
+
+      // Set the ellipsoid around the camera (e.g. your player's size)
+      camera.ellipsoid = new BABYLON.Vector3(1, 1, 1);
+
+      // Say which mesh will be collisionable
+      ground.checkCollisions = true;
+      box.checkCollisions = true;
+
+      return scene;
+    }
+
+    const scene = createScene(); //Call the createScene function
+
+    // Register a render loop to repeatedly render the scene
+    engine.runRenderLoop(function() {
+      scene.render();
+    });
+
+    // Watch for browser/canvas resize events
+    window.addEventListener("resize", function() {
+      engine.resize();
+    });
+  </script>
+
+</body>
 
 </html>
