@@ -31,8 +31,6 @@
       //var light1 = new BABYLON.PointLight("Omni", new BABYLON.Vector3(15, -2, -15), scene);
       //light1.intensity = 1.7;
       
-
-
       // Need a free camera for collisions
       var camera = new BABYLON.FreeCamera("FreeCamera", new BABYLON.Vector3(4, -8, -15), scene);
       camera.attachControl(canvas, true);
@@ -41,7 +39,7 @@
       camera.minZ = 0.5;
       camera.fov = 1.3;
       camera.angularSensibility=2500;
-      camera.inertia = 0.8;
+      camera.inertia = 0.7;
 
       // Camera WASD Controls
       camera.keysUp.push(87);
@@ -57,19 +55,17 @@
       ground.position = new BABYLON.Vector3(5, -10, -15);
       ground.rotation = new BABYLON.Vector3(Math.PI / 2, 0, 0);  */
 
-      
+     
       // Box
-      var box = BABYLON.MeshBuilder.CreateBox("crate", {height:0.2, width:2, depth: 2}, scene);
+      var box = BABYLON.MeshBuilder.CreateBox("crate", {height:10, width:2, depth: 2}, scene);
       box.material = new BABYLON.StandardMaterial("Mat", scene);
-      box.material.diffuseTexture = new BABYLON.Texture("textures/crate.png", scene);
-      box.material.diffuseTexture.hasAlpha = true;
-      box.position = new BABYLON.Vector3(5, -10, -10);  
+      //box.material.diffuseTexture = new BABYLON.Texture("textures/crate.png", scene);
+      //box.material.diffuseTexture.hasAlpha = true;
+      box.position = new BABYLON.Vector3(5, -8, -10.5);  
       
-
-
       // Import with Asset Manager
         var assetsManager = new BABYLON.AssetsManager(scene);
-	var meshTask = assetsManager.addMeshTask("skull", "", "assets/", "babylon-import2.babylon");
+	var meshTask = assetsManager.addMeshTask("skull", "", "assets/", "babylon-import5.babylon");
 	
 	meshTask.onSuccess = function (task) {
 	    task.loadedMeshes[0].position = new BABYLON.Vector3(5, -10.6, -15);
@@ -78,7 +74,7 @@
         assetsManager.load();
       
       // Set gravity for the scene (G force like, on Y-axis)
-      scene.gravity = new BABYLON.Vector3(0, -0.3, 0);
+      scene.gravity = new BABYLON.Vector3(0, -0.1, 0);
 
       // Enable Collisions
       scene.collisionsEnabled = true;
