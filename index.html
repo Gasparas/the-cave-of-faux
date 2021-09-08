@@ -25,11 +25,11 @@
       var scene = new BABYLON.Scene(engine);
 
       // Lights
-      var light0 = new BABYLON.HemisphericLight("HemiLight", new BABYLON.Vector3(5, -8, -15), scene);
-      light0.intensity = 0.5;
+      var light0 = new BABYLON.HemisphericLight("HemiLight", new BABYLON.Vector3(5, -18, -10.5), scene);
+      light0.intensity = 1;
       
-      //var light1 = new BABYLON.PointLight("Omni", new BABYLON.Vector3(15, -2, -15), scene);
-      //light1.intensity = 1.7;
+      var light1 = new BABYLON.PointLight("Omni", new BABYLON.Vector3(10, -5, -15), scene);
+      light1.intensity = 0;
       
       // Need a free camera for collisions
       var camera = new BABYLON.FreeCamera("FreeCamera", new BABYLON.Vector3(4, -8, -15), scene);
@@ -56,20 +56,25 @@
       ground.rotation = new BABYLON.Vector3(Math.PI / 2, 0, 0);  */
 
      
-      // Box
-      var box = BABYLON.MeshBuilder.CreateBox("crate", {height:10, width:2, depth: 2}, scene);
+       // Box
+     var box = BABYLON.MeshBuilder.CreateBox("crate", {height:10, width:2, depth: 2}, scene);
       box.material = new BABYLON.StandardMaterial("Mat", scene);
       //box.material.diffuseTexture = new BABYLON.Texture("textures/crate.png", scene);
       //box.material.diffuseTexture.hasAlpha = true;
-      box.position = new BABYLON.Vector3(5, -8, -10.5);  
+      box.position = new BABYLON.Vector3(5, -18, -10.5);    
       
       // Import with Asset Manager
         var assetsManager = new BABYLON.AssetsManager(scene);
-	var meshTask = assetsManager.addMeshTask("skull", "", "assets/", "babylon-import5.babylon");
+	var meshTask = assetsManager.addMeshTask("skull", "", "assets/", "cave-model-1-displace-3.babylon");
 	
 	meshTask.onSuccess = function (task) {
 	    task.loadedMeshes[0].position = new BABYLON.Vector3(5, -10.6, -15);
-            task.loadedMeshes[0].checkCollisions = true;
+            task.loadedMeshes[0].checkCollisions = true;            
+            var pbr = new BABYLON.PBRMetallicRoughnessMaterial("pbr", scene);
+                pbr.baseColor = new BABYLON.Color3(1.0, 0.766, 0.336);
+                pbr.metallic = 1.0;
+                pbr.roughness = 1.0;
+            task.loadedMeshes[0].material = pbr;
 	};
         assetsManager.load();
       
