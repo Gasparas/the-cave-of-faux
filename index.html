@@ -68,6 +68,8 @@
 	var meshTask = assetsManager.addMeshTask("skull", "", "assets/", "cave-model-1-displace-3.babylon");
 	
 	meshTask.onSuccess = function (task) {
+                        scene.createDefaultEnvironment();
+
 	    task.loadedMeshes[0].position = new BABYLON.Vector3(5, -10.6, -15);
             task.loadedMeshes[0].checkCollisions = true;            
             var pbr = new BABYLON.PBRMetallicRoughnessMaterial("pbr", scene);

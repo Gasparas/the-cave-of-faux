@@ -31,8 +31,8 @@
       var light1 = new BABYLON.PointLight("Omni", new BABYLON.Vector3(10, -5, -15), scene);
       light1.intensity = 0;
       
-      // Need a free camera for collisions
-      var camera = new BABYLON.FreeCamera("FreeCamera", new BABYLON.Vector3(4, -8, -15), scene);
+      // Camera 
+      var camera = new BABYLON.FreeCamera("FreeCamera", new BABYLON.Vector3(1, 2, -2), scene);
       camera.attachControl(canvas, true);
 
       camera.speed = 0.5;
@@ -64,17 +64,48 @@
       box.position = new BABYLON.Vector3(5, -18, -10.5);    
       
       // Import with Asset Manager
+      function assignLightmapOnMaterial(material, lightmap) {
+    material.diffuseColor = BABYLON.Color3.Black();
+    material.lightmapTexture = lightmap;
+    material.lightmapTexture.coordinatesIndex = 1;
+    material.useLightmapAsShadowmap = true;
+}
+      
+      
         var assetsManager = new BABYLON.AssetsManager(scene);
-	var meshTask = assetsManager.addMeshTask("mesh", "cornellBox.000", "assets/", "cornellBox.babylon");
+
+        var mesh_names = ["cornellBox.000","suzanne.000","bloc.000"];
+        var meshTask = assetsManager.addMeshTask("mesh", mesh_names, "assets/", "cornellBox.babylon");
 	
 	meshTask.onSuccess = function (task) {
-	    task.loadedMeshes[0].position = new BABYLON.Vector3(5, -11, -14);
-            task.loadedMeshes[0].checkCollisions = true;            
-            /*var pbr = new BABYLON.PBRMetallicRoughnessMaterial("pbr", scene);
-                pbr.baseColor = new BABYLON.Color3(1.0, 0.766, 0.336);
-                pbr.metallic = 1.0;
-                pbr.roughness = 1.0;babylon-import3.babylon
-            task.loadedMeshes[0].material = pbr;*/
+            scene.createDefaultEnvironment();
+            scene.ambientColor = BABYLON.Color3.White();
+            
+	    //task.loadedMeshes[0].position = new BABYLON.Vector3(4, -10, -13.5);
+            task.loadedMeshes[0].checkCollisions = true;     
+	    //task.loadedMeshes[1].position = new BABYLON.Vector3(4, -11, -15);
+            task.loadedMeshes[1].checkCollisions = true;  
+            task.loadedMeshes[2].checkCollisions = true;  
+
+            // cycles through objects to assign their lightmaps
+            let lightmappedMeshes = ["suzanne.000", "cornellBox.000","bloc.000"];
+            for (let i = 0; i < lightmappedMeshes.length; i++) {
+                let currentMesh = scene.getMeshByName(lightmappedMeshes[i]);
+                // lightmap texture creation
+                let currentLightmap = new BABYLON.Texture(
+                    "assets/" + currentMesh.name + ".lightmap.jpg",
+                    scene);
+                // if only one material
+                if (!currentMesh.material.subMaterials) {
+                    assignLightmapOnMaterial(currentMesh.material, currentLightmap);
+                } else {
+                    // subMaterials
+                    for (let j = 0; j < currentMesh.material.subMaterials.length; j++) {
+                        assignLightmapOnMaterial(currentMesh.material.subMaterials[j], currentLightmap);
+                    }
+                }
+            }
+            
 	};
         assetsManager.load();
       
