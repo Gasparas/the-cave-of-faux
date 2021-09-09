@@ -56,22 +56,21 @@
       ground.rotation = new BABYLON.Vector3(Math.PI / 2, 0, 0);  */
 
      
-       // Box
+      // Box
      var box = BABYLON.MeshBuilder.CreateBox("crate", {height:10, width:2, depth: 2}, scene);
       box.material = new BABYLON.StandardMaterial("Mat", scene);
       //box.material.diffuseTexture = new BABYLON.Texture("textures/crate.png", scene);
       //box.material.diffuseTexture.hasAlpha = true;
-      box.position = new BABYLON.Vector3(5, -18, -10.5);    
+      box.position = new BABYLON.Vector3(5, -18, -10.5);   
       
       // Import with Asset Manager
       function assignLightmapOnMaterial(material, lightmap) {
-    material.diffuseColor = BABYLON.Color3.Black();
-    material.lightmapTexture = lightmap;
-    material.lightmapTexture.coordinatesIndex = 1;
-    material.useLightmapAsShadowmap = true;
-}
-      
-      
+        material.diffuseColor = BABYLON.Color3.Black();
+        material.lightmapTexture = lightmap;
+        material.lightmapTexture.coordinatesIndex = 1;
+        material.useLightmapAsShadowmap = true;
+      }
+            
         var assetsManager = new BABYLON.AssetsManager(scene);
 
         var mesh_names = ["cornellBox.000","suzanne.000","bloc.000"];

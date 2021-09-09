@@ -25,13 +25,13 @@
       var scene = new BABYLON.Scene(engine);
 
       // Lights
-      var light0 = new BABYLON.HemisphericLight("HemiLight", new BABYLON.Vector3(5, -18, -10.5), scene);
-      light0.intensity = 1;
+      var light0 = new BABYLON.HemisphericLight("Hemi", new BABYLON.Vector3(5, -18, -10.5), scene);
+      light0.intensity = 0.2;
       
-      var light1 = new BABYLON.PointLight("Omni", new BABYLON.Vector3(10, -5, -15), scene);
+      var light1 = new BABYLON.PointLight("Point", new BABYLON.Vector3(10, -5, -15), scene);
       light1.intensity = 0;
       
-      // Need a free camera for collisions
+      // Camera
       var camera = new BABYLON.FreeCamera("FreeCamera", new BABYLON.Vector3(4, -8, -15), scene);
       camera.attachControl(canvas, true);
 
@@ -68,8 +68,7 @@
 	var meshTask = assetsManager.addMeshTask("skull", "", "assets/", "cave-model-1-displace-3.babylon");
 	
 	meshTask.onSuccess = function (task) {
-                        scene.createDefaultEnvironment();
-
+            //scene.createDefaultEnvironment();
 	    task.loadedMeshes[0].position = new BABYLON.Vector3(5, -10.6, -15);
             task.loadedMeshes[0].checkCollisions = true;            
             var pbr = new BABYLON.PBRMetallicRoughnessMaterial("pbr", scene);

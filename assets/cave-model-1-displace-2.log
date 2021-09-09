@@ -11,19 +11,31 @@ Exporter version: 2.93.4, Blender version: 2.93.4
 		Keep Z-up r-handed  :  no
 		Texture directory   :  /var/www/html/babylonjs/babylonjs/public_html/babjs-template/assets/
 	Python World class constructor completed
-	processing begun of mesh:  Cube
-		processing begun of material:  Material
-		num positions      :  1548633
-		num normals        :  1548633
+	processing begun of camera (UniversalCamera):  Camera.001
+	processing begun of mesh:  Sphere.001
+		processing begun of material:  Material.001
+		num positions      :  6099
+		num normals        :  6099
 		num tangents       :  0
-		num uvs            :  3097266
+		num uvs            :  12198
 		num uvs2           :  0
 		num colors         :  0
-		num triangles      :  523008
-	processing begun of camera (UniversalCamera):  Camera
-	processing begun of light (POINT):  Light
+		num triangles      :  8664
+	processing begun of mesh:  Sphere.002
+		processing begun of material:  Material
+			processing texture Sphere_002_lightmap
+				texture type:  diffuseTexture, mapped using: "UVMap"
+		num positions      :  8311
+		num normals        :  8311
+		num tangents       :  0
+		num uvs            :  16622
+		num uvs2           :  0
+		num colors         :  0
+		num triangles      :  3104
+	processing begun of light (POINT):  Light.001
 ========= Writing of JSON file started =========
-	writing mesh:  Cube
+	writing mesh:  Sphere.001
+	writing mesh:  Sphere.002
 ========= Writing of JSON file completed =========
 ========= end of processing =========
-elapsed time:  0 min, 36.5904 secs
+elapsed time:  0 min, 0.6317 secs
