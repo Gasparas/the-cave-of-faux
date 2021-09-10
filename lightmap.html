@@ -62,13 +62,15 @@
       //box.material.diffuseTexture = new BABYLON.Texture("textures/crate.png", scene);
       //box.material.diffuseTexture.hasAlpha = true;
       box.position = new BABYLON.Vector3(5, -18, -10.5);   
+      box.material.diffuseColor = new BABYLON.Color3(1, 0, 1);
+
       
       // Import with Asset Manager
       function assignLightmapOnMaterial(material, lightmap) {
         material.diffuseColor = BABYLON.Color3.Black();
         material.lightmapTexture = lightmap;
         material.lightmapTexture.coordinatesIndex = 1;
-        material.useLightmapAsShadowmap = true;
+        material.useLightmapAsShadowmap = false;
       }
             
         var assetsManager = new BABYLON.AssetsManager(scene);
@@ -77,14 +79,23 @@
         var meshTask = assetsManager.addMeshTask("mesh", mesh_names, "assets/", "cornellBox.babylon");
 	
 	meshTask.onSuccess = function (task) {
-            scene.createDefaultEnvironment();
-            scene.ambientColor = BABYLON.Color3.White();
+            //scene.createDefaultEnvironment();
+            //scene.ambientColor = new BABYLON.Color3(1, 1, 1);
+
             
 	    //task.loadedMeshes[0].position = new BABYLON.Vector3(4, -10, -13.5);
             task.loadedMeshes[0].checkCollisions = true;     
 	    //task.loadedMeshes[1].position = new BABYLON.Vector3(4, -11, -15);
             task.loadedMeshes[1].checkCollisions = true;  
             task.loadedMeshes[2].checkCollisions = true;  
+            /*
+                        task.loadedMeshes[0].material = new BABYLON.StandardMaterial("Mat", scene);
+                        task.loadedMeshes[1].material = new BABYLON.StandardMaterial("Mat", scene);
+                        task.loadedMeshes[2].material = new BABYLON.StandardMaterial("Mat", scene);
+                        task.loadedMeshes[2].material.diffuseColor = new BABYLON.Color3(1, 0, 1);
+*/
+
+
 
             // cycles through objects to assign their lightmaps
             let lightmappedMeshes = ["suzanne.000", "cornellBox.000","bloc.000"];

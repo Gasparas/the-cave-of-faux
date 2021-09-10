@@ -25,7 +25,7 @@
       var scene = new BABYLON.Scene(engine);
 
       // Lights
-      var light0 = new BABYLON.HemisphericLight("Hemi", new BABYLON.Vector3(5, -18, -10.5), scene);
+      var light0 = new BABYLON.HemisphericLight("HemiLight", new BABYLON.Vector3(5, -18, -10.5), scene);
       light0.intensity = 1;
       
       var light1 = new BABYLON.PointLight("Point", new BABYLON.Vector3(10, -5, -15), scene);
@@ -77,29 +77,28 @@
         material.diffuseColor = BABYLON.Color3.Black();
         material.lightmapTexture = lightmap;
         material.lightmapTexture.coordinatesIndex = 1;
-        material.useLightmapAsShadowmap = true;
+        material.useLightmapAsShadowmap = false;
       }
 
         var assetsManager = new BABYLON.AssetsManager(scene);
 
         var mesh_names = ["Sphere.001","Sphere.002"];
-        var meshTask = assetsManager.addMeshTask("mesh", mesh_names, "assets/", "cave-model-1-displace-2.babylon");
+        var meshTask = assetsManager.addMeshTask("mesh", mesh_names, "assets/", "cave-model-1-displace-4.babylon");
 	
 	meshTask.onSuccess = function (task) {
             //scene.createDefaultEnvironment();
-            scene.ambientColor = BABYLON.Color3.White();
+            //scene.ambientColor = new BABYLON.Color3(1, 1, 1);
+
             
 	    task.loadedMeshes[0].position = new BABYLON.Vector3(4, -10, -13.5);
             task.loadedMeshes[0].checkCollisions = true;     
-             task.loadedMeshes[1].position = new BABYLON.Vector3(4, -10, -13.5);
+            task.loadedMeshes[1].position = new BABYLON.Vector3(4, -10, -13.5);
             task.loadedMeshes[1].checkCollisions = true;  
-
-	    //task.loadedMeshes[1].position = new BABYLON.Vector3(4, -11, -15);
-            //task.loadedMeshes[1].checkCollisions = true;  
-            //task.loadedMeshes[2].checkCollisions = true;  
+            //task.loadedMeshes[0].material = new BABYLON.StandardMaterial("Mat", scene);
+            //task.loadedMeshes[1].material = new BABYLON.StandardMaterial("Mat", scene);
 
             // cycles through objects to assign their lightmaps
-            let lightmappedMeshes = ["Sphere.001","Sphere.002"];
+            //let lightmappedMeshes = ["Sphere.002"];
             for (let i = 0; i < lightmappedMeshes.length; i++) {
                 let currentMesh = scene.getMeshByName(lightmappedMeshes[i]);
                 // lightmap texture creation
