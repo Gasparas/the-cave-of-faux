@@ -22,17 +22,10 @@
 
     // Add your code here matching the playground format
     var createScene = function() {
-      var scene = new BABYLON.Scene(engine);
-
-      // Lights
-      var light0 = new BABYLON.HemisphericLight("HemiLight", new BABYLON.Vector3(5, -18, -10.5), scene);
-      light0.intensity = 0;
-      
-      var light1 = new BABYLON.PointLight("Omni", new BABYLON.Vector3(10, -5, -15), scene);
-      light1.intensity = 0;
-      
-      // Camera 
-      var camera = new BABYLON.FreeCamera("FreeCamera", new BABYLON.Vector3(1, 2, -2), scene);
+      var scene = new BABYLON.Scene(engine); 
+    
+      // Camera
+      var camera = new BABYLON.FreeCamera("FreeCamera", new BABYLON.Vector3(0, 2, -8), scene);
       camera.attachControl(canvas, true);
 
       camera.speed = 0.5;
@@ -47,58 +40,32 @@
       camera.keysRight.push(68);
       camera.keysLeft.push(65);
 
-      /*  // Ground
-      var ground = BABYLON.Mesh.CreatePlane("ground", 20.0, scene);
-      ground.material = new BABYLON.StandardMaterial("groundMat", scene);
-      ground.material.diffuseColor = new BABYLON.Color3(1, 1, 1);
-      ground.material.backFaceCulling = false;
-      ground.position = new BABYLON.Vector3(5, -10, -15);
-      ground.rotation = new BABYLON.Vector3(Math.PI / 2, 0, 0);  */
-
-     
-      // Box
-     var box = BABYLON.MeshBuilder.CreateBox("crate", {height:10, width:2, depth: 2}, scene);
-      box.material = new BABYLON.StandardMaterial("Mat", scene);
-      //box.material.diffuseTexture = new BABYLON.Texture("textures/crate.png", scene);
-      //box.material.diffuseTexture.hasAlpha = true;
-      box.position = new BABYLON.Vector3(5, -18, -10.5);   
-      box.material.diffuseColor = new BABYLON.Color3(1, 0, 1);
-
-      
-      // Import with Asset Manager
-      function assignLightmapOnMaterial(material, lightmap) {
-        material.diffuseColor = BABYLON.Color3.Black();
-        material.lightmapTexture = lightmap;
-        material.lightmapTexture.coordinatesIndex = 1;
-        material.useLightmapAsShadowmap = false;
-      }
-            
+    // Create light
+    var light = new BABYLON.PointLight("light", new BABYLON.Vector3(3, 3, -3), scene);
+    light.intensity = 0.5;   
+    
+    //scene.createDefaultEnvironment();
+    scene.ambientColor = new BABYLON.Color3(1, 1, 1);
+    
+    // Import with Asset Manager
         var assetsManager = new BABYLON.AssetsManager(scene);
 
-        var mesh_names = ["cornellBox.000","suzanne.000","bloc.000"];
-        var meshTask = assetsManager.addMeshTask("mesh", mesh_names, "assets/", "cornellBox.babylon");
+        var mesh_names = ["Cube.006"];
+        var meshTask = assetsManager.addMeshTask("mesh", mesh_names, "assets/", "cave-map-4.babylon");
 	
 	meshTask.onSuccess = function (task) {
-            //scene.createDefaultEnvironment();
-            scene.ambientColor = new BABYLON.Color3.White();
-
             
-	    //task.loadedMeshes[0].position = new BABYLON.Vector3(4, -10, -13.5);
-            task.loadedMeshes[0].checkCollisions = true;     
-	    //task.loadedMeshes[1].position = new BABYLON.Vector3(4, -11, -15);
-            task.loadedMeshes[1].checkCollisions = true;  
-            task.loadedMeshes[2].checkCollisions = true;  
-            /*
-                        task.loadedMeshes[0].material = new BABYLON.StandardMaterial("Mat", scene);
-                        task.loadedMeshes[1].material = new BABYLON.StandardMaterial("Mat", scene);
-                        task.loadedMeshes[2].material = new BABYLON.StandardMaterial("Mat", scene);
-                        task.loadedMeshes[2].material.diffuseColor = new BABYLON.Color3(1, 0, 1);
-*/
+	    task.loadedMeshes[0].position = new BABYLON.Vector3(0, 0.2, 0);
+            task.loadedMeshes[0].checkCollisions = true;      
+            var planeMaterial = new BABYLON.StandardMaterial("groundMaterial", scene);
+            planeMaterial.lightmapTexture = lightmap;
+                task.loadedMeshes[0].material = planeMaterial;
+                     task.loadedMeshes[0].receiveShadows = true;
 
 
 
             // cycles through objects to assign their lightmaps
-            let lightmappedMeshes = ["suzanne.000", "cornellBox.000","bloc.000"];
+            //let lightmappedMeshes = ["Plane"];
             for (let i = 0; i < lightmappedMeshes.length; i++) {
                 let currentMesh = scene.getMeshByName(lightmappedMeshes[i]);
                 // lightmap texture creation
@@ -118,6 +85,52 @@
             
 	};
         assetsManager.load();
+    
+
+    // Create lightmap texture on a material
+    var lightmap = new BABYLON.Texture("assets/lmap.png", scene);
+    var groundMaterial = new BABYLON.StandardMaterial("groundMaterial", scene);
+    groundMaterial.lightmapTexture = lightmap;
+    //groundMaterial.ambientColor = new BABYLON.Color3(1, 1, 1);
+    //groundMaterial.diffuseColor = BABYLON.Color3.White();
+    //groundMaterial.lightmapTexture.coordinatesIndex = 1;
+    groundMaterial.useLightmapAsShadowmap = false;
+
+    // Apply lightmap to floor mesh
+    var ground = BABYLON.Mesh.CreateGround("ground", 20, 20, 4, scene);
+    ground.material = groundMaterial;
+    ground.receiveShadows = true;
+
+    // Create sphere which will cast shadow on floor mesh
+    var sphere = BABYLON.Mesh.CreateSphere("sphere1", 16, 1, scene);
+    sphere.position.z=-1;
+    sphere.position.y=2;
+    var shadowGenerator = new BABYLON.ShadowGenerator(1024, light);
+    shadowGenerator.addShadowCaster(sphere);
+
+  
+    light.lightmapMode = BABYLON.Light.LIGHTMAP_SPECULAR;
+
+    // Press space to swich lightmap mode
+    var mode = 0;
+    document.onkeydown = (e)=>{
+        var keyCode = e.keyCode ? e.keyCode : e.which;
+        if (keyCode === 32) {
+            mode = ++mode%3;
+            if(mode === 1){
+                light.lightmapMode = BABYLON.Light.LIGHTMAP_SPECULAR;
+            }else if(mode === 2){
+                light.lightmapMode = BABYLON.Light.LIGHTMAP_SHADOWSONLY;
+            }else{
+                light.lightmapMode = BABYLON.Light.LIGHTMAP_DEFAULT;
+            }
+        }
+    };
+
+      
+      
+            
+      
       
       // Set gravity for the scene (G force like, on Y-axis)
       scene.gravity = new BABYLON.Vector3(0, -0.1, 0);
@@ -130,11 +143,12 @@
       camera.applyGravity = true;
 
       // Set the ellipsoid around the camera (e.g. your player's size)
-      camera.ellipsoid = new BABYLON.Vector3(1, 1, 1);
+      camera.ellipsoid = new BABYLON.Vector3(1.2, 1, 1.2);
 
       // Say which mesh will be collisionable
-      // ground.checkCollisions = true;
-      box.checkCollisions = true;
+        ground.checkCollisions = true;
+        sphere.checkCollisions = true;
+      //box.checkCollisions = true;
       
         /********** POINTER LOCK **************************/
 
@@ -152,7 +166,7 @@
             }
         }
 
-        evt.preventDefault();
+        evt.preventDefault() ;
         
         //continue with shooting requests or whatever :P
         //evt === 0 (left mouse click)
