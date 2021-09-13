@@ -45,7 +45,7 @@
     light.intensity = 0.5;   
     
     //scene.createDefaultEnvironment();
-    scene.ambientColor = new BABYLON.Color3(1, 1, 1);
+    //scene.ambientColor = new BABYLON.Color3(1, 1, 1);
     
     // Import with Asset Manager
         var assetsManager = new BABYLON.AssetsManager(scene);
@@ -56,50 +56,38 @@
 	meshTask.onSuccess = function (task) {
             
 	    task.loadedMeshes[0].position = new BABYLON.Vector3(0, 0.2, 0);
-            task.loadedMeshes[0].checkCollisions = true;      
-            var planeMaterial = new BABYLON.StandardMaterial("groundMaterial", scene);
-            planeMaterial.lightmapTexture = lightmap;
-                task.loadedMeshes[0].material = planeMaterial;
-                     task.loadedMeshes[0].receiveShadows = true;
-
-
-
-            // cycles through objects to assign their lightmaps
-            //let lightmappedMeshes = ["Plane"];
-            for (let i = 0; i < lightmappedMeshes.length; i++) {
-                let currentMesh = scene.getMeshByName(lightmappedMeshes[i]);
-                // lightmap texture creation
-                let currentLightmap = new BABYLON.Texture(
-                    "assets/" + currentMesh.name + ".lightmap.jpg",
-                    scene);
-                // if only one material
-                if (!currentMesh.material.subMaterials) {
-                    assignLightmapOnMaterial(currentMesh.material, currentLightmap);
-                } else {
-                    // subMaterials
-                    for (let j = 0; j < currentMesh.material.subMaterials.length; j++) {
-                        assignLightmapOnMaterial(currentMesh.material.subMaterials[j], currentLightmap);
-                    }
-                }
-            }
+            task.loadedMeshes[0].checkCollisions = true;   
             
+            var planeMaterial = new BABYLON.StandardMaterial("planeMaterial", scene);
+            var lightmap = new BABYLON.Texture("assets/Plane.lightmap.jpg", scene);
+            planeMaterial.lightmapTexture = lightmap;
+
+            task.loadedMeshes[0].material = planeMaterial;
+            task.loadedMeshes[0].receiveShadows = true;            
+               
+            //task.loadedMeshes[0].ambientColor = new BABYLON.Color3.White();
+            //task.loadedMeshes[0].diffuseColor = new BABYLON.Color3.White();
+            //task.loadedMeshes[0].lightmapTexture.coordinatesIndex = 1;
+            //task.loadedMeshes[0].useLightmapAsShadowmap = true;
+
+
 	};
         assetsManager.load();
     
 
-    // Create lightmap texture on a material
+    /*// Create lightmap texture on a material
     var lightmap = new BABYLON.Texture("assets/lmap.png", scene);
     var groundMaterial = new BABYLON.StandardMaterial("groundMaterial", scene);
     groundMaterial.lightmapTexture = lightmap;
-    //groundMaterial.ambientColor = new BABYLON.Color3(1, 1, 1);
-    //groundMaterial.diffuseColor = BABYLON.Color3.White();
-    //groundMaterial.lightmapTexture.coordinatesIndex = 1;
-    groundMaterial.useLightmapAsShadowmap = false;
+    groundMaterial.ambientColor = new BABYLON.Color3(1, 1, 1);
+    groundMaterial.diffuseColor = BABYLON.Color3.White();
+    groundMaterial.lightmapTexture.coordinatesIndex = 1;
+    groundMaterial.useLightmapAsShadowmap = true;
 
     // Apply lightmap to floor mesh
     var ground = BABYLON.Mesh.CreateGround("ground", 20, 20, 4, scene);
     ground.material = groundMaterial;
-    ground.receiveShadows = true;
+    ground.receiveShadows = true;*/
 
     // Create sphere which will cast shadow on floor mesh
     var sphere = BABYLON.Mesh.CreateSphere("sphere1", 16, 1, scene);
@@ -152,7 +140,7 @@
       camera.ellipsoid = new BABYLON.Vector3(1.2, 1, 1.2);
 
       // Say which mesh will be collisionable
-        ground.checkCollisions = true;
+        //ground.checkCollisions = true;
         sphere.checkCollisions = true;
       //box.checkCollisions = true;
       
