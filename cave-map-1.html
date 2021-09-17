@@ -28,7 +28,7 @@
       var camera = new BABYLON.FreeCamera("FreeCamera", new BABYLON.Vector3(0, 2, 0), scene);
       camera.attachControl(canvas, true);
       camera.rotation.y = Math.PI/-2;
-      camera.speed = 1;
+      camera.speed = 2;
       camera.minZ = 0.5;
       camera.fov = 1.2;
       camera.angularSensibility=2500;
@@ -50,22 +50,34 @@
     // Import with Asset Manager
         var assetsManager = new BABYLON.AssetsManager(scene);
 
-        var mesh_names = ["Cube.004"];
-        var meshTask = assetsManager.addMeshTask("mesh", mesh_names, "assets/", "cave-map-5.babylon");
+        var mesh_names = ["Cube.016", "Cube.015"];
+        var meshTask = assetsManager.addMeshTask("mesh", mesh_names, "assets/", "cave-map-3-3.babylon");
 	
 	meshTask.onSuccess = function (task) {
             
-	    task.loadedMeshes[0].position = new BABYLON.Vector3(0, 0, 0);
-            task.loadedMeshes[0].checkCollisions = true;   
+            mesh_1 = task.loadedMeshes[1] ;
+            mesh_2 = task.loadedMeshes[0] ;
+            
+	        mesh_1.position = new BABYLON.Vector3(0, 0, 0);
+            mesh_1.checkCollisions = true;   
+            
+            mesh_2.position = new BABYLON.Vector3(0, 0, 0);
+            mesh_2.checkCollisions = true;   
             
             var planeMaterial = new BABYLON.StandardMaterial("planeMaterial", scene);
             var lightmap = new BABYLON.Texture("assets/light-map-3-2.jpg", scene);
             planeMaterial.lightmapTexture = lightmap;
-
-            task.loadedMeshes[0].material = planeMaterial;
-            task.loadedMeshes[0].receiveShadows = false;   
+            
+            var bcMaterial = new BABYLON.StandardMaterial("bcMaterial", scene);
+            var bcLightmap = new BABYLON.Texture("assets/bc-tex.jpg", scene);
+            bcMaterial.lightmapTexture = bcLightmap;            
+             
+            mesh_1.material = planeMaterial;
+            mesh_2.material = bcMaterial;
+            
+            //mesh_1.receiveShadows = false;   
             //task.loadedMeshes[0].useLightmapAsShadowmap = false;
-            //task.loadedMeshes[0].lightmapTexture.coordinatesIndex = 0;
+            //task.loadedMeshes[0].lightmapTexture.coordinatesIndex = 1;
 	};
         assetsManager.load();
 
