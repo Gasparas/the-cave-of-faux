@@ -50,19 +50,28 @@
     // Import with Asset Manager
         var assetsManager = new BABYLON.AssetsManager(scene);
 
-        var mesh_names = ["Cube.016", "Cube.015"];
-        var meshTask = assetsManager.addMeshTask("mesh", mesh_names, "assets/", "cave-map-3-3.babylon");
+        var mesh_names = ["Cube.016", "Cube.015", "Cube.017", "Cube.018"];
+        var meshTask = assetsManager.addMeshTask("mesh", mesh_names, "assets/", "cave-map-3-4.babylon");
 	
 	meshTask.onSuccess = function (task) {
             
-            mesh_1 = task.loadedMeshes[1] ;
-            mesh_2 = task.loadedMeshes[0] ;
+            mesh_1 = task.loadedMeshes[3];
+            mesh_2 = task.loadedMeshes[0];
+            mesh_3 = task.loadedMeshes[1];
+            mesh_4 = task.loadedMeshes[2];
             
-	        mesh_1.position = new BABYLON.Vector3(0, 0, 0);
+	    mesh_1.position = new BABYLON.Vector3(0, 0, 0);
             mesh_1.checkCollisions = true;   
             
             mesh_2.position = new BABYLON.Vector3(0, 0, 0);
             mesh_2.checkCollisions = true;   
+            
+            mesh_3.position = new BABYLON.Vector3(0, 0, 0);
+            mesh_3.checkCollisions = true; 
+            
+            mesh_4.position = new BABYLON.Vector3(0, 0, 0);
+            mesh_4.checkCollisions = true; 
+         
             
             var planeMaterial = new BABYLON.StandardMaterial("planeMaterial", scene);
             var lightmap = new BABYLON.Texture("assets/light-map-3-2.jpg", scene);
@@ -70,10 +79,20 @@
             
             var bcMaterial = new BABYLON.StandardMaterial("bcMaterial", scene);
             var bcLightmap = new BABYLON.Texture("assets/bc-tex.jpg", scene);
-            bcMaterial.lightmapTexture = bcLightmap;            
+            bcMaterial.lightmapTexture = bcLightmap;    
+            
+            var pompeiMaterial = new BABYLON.StandardMaterial("pompeiMaterial", scene);
+            var pompeiLightmap = new BABYLON.Texture("assets/pompei-tex.jpg", scene);
+            pompeiMaterial.lightmapTexture = pompeiLightmap;  
+            
+            var canMaterial = new BABYLON.StandardMaterial("canMaterial", scene);
+            var canLightmap = new BABYLON.Texture("assets/can-tex.jpg", scene);
+            canMaterial.lightmapTexture = canLightmap; 
              
             mesh_1.material = planeMaterial;
             mesh_2.material = bcMaterial;
+            mesh_3.material = pompeiMaterial;
+            mesh_4.material = canMaterial;
             
             //mesh_1.receiveShadows = false;   
             //task.loadedMeshes[0].useLightmapAsShadowmap = false;
