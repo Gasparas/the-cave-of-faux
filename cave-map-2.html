@@ -5,6 +5,7 @@
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
   <title>Babylon Template</title>
   <script src="https://cdn.babylonjs.com/babylon.js"></script>
+  <script src="https://cdn.babylonjs.com/proceduralTexturesLibrary/babylonjs.proceduralTextures.min.js"></script>
   <!-- <script src="https://cdn.babylonjs.com/loaders/babylonjs.loaders.min.js"></script>-->
   <!--<script src="https://cdn.babylonjs.com/loaders/babylon.glTF2FileLoader.js"></script>-->
 
@@ -50,12 +51,12 @@
     // Import with Asset Manager
         var assetsManager = new BABYLON.AssetsManager(scene);
 
-        var mesh_names = ["Cube.016", "Cube.015", "Cube.017", "Cube.018", "Cube.019", "Cube.020", "Cube.021", "Cube.022", "Cube.023"];
-        var meshTask = assetsManager.addMeshTask("mesh", mesh_names, "assets/", "cave-map-3-6.babylon");
+        var mesh_names = ["Cube.016", "Cube.015", "Cube.017", "Cube.018", "Cube.019", "Cube.020", "Cube.021", "Cube.022", "Cube.023", "Cube.024"];
+        var meshTask = assetsManager.addMeshTask("mesh", mesh_names, "assets/", "cave-map-3-7.babylon");
 	
 	meshTask.onSuccess = function (task) {
             
-            mesh_1 = task.loadedMeshes[8];
+            mesh_1 = task.loadedMeshes[9];
             mesh_2 = task.loadedMeshes[0];
             mesh_3 = task.loadedMeshes[1];
             mesh_4 = task.loadedMeshes[2];
@@ -64,6 +65,7 @@
             mesh_7 = task.loadedMeshes[5];
             mesh_8 = task.loadedMeshes[6];
             mesh_9 = task.loadedMeshes[7];
+            mesh_10 = task.loadedMeshes[8];
             
 	    mesh_1.position = new BABYLON.Vector3(0, 0, 0);
             mesh_1.checkCollisions = true;   
@@ -91,12 +93,40 @@
             
             mesh_9.position = new BABYLON.Vector3(0, 0, 0);
             mesh_9.checkCollisions = true; 
+            
+            mesh_10.position = new BABYLON.Vector3(0, 0, 0);
+            mesh_10.checkCollisions = true; 
          
+            /*
+            var noiseTexture = new BABYLON.NoiseProceduralTexture("perlin", 512, scene);
+            noiseTexture.brightness = 0.9;
+            noiseTexture.octaves = 7;
+            noiseTexture.persistence =  1;
+            noiseTexture.animationSpeedFactor = 0;
+             */
+             
+            var fireTexture = new BABYLON.FireProceduralTexture("fire", 512, scene);
+            fireTexture.autoGenerateTime = false;
+            fireTexture.fireColors = [
+                    new BABYLON.Color3(0.9, 0.9, 0.8),
+                    new BABYLON.Color3(0.9, 0.8, 0.6),
+                    new BABYLON.Color3(0.9, 0.8, 0.6),
+                    new BABYLON.Color3(0.9, 0.8, 0.6),
+                    new BABYLON.Color3(0.9, 0.8, 0.6),
+                    new BABYLON.Color3(0.9, 0.8, 0.6)
+                ];
+                
             
             var planeMaterial = new BABYLON.StandardMaterial("planeMaterial", scene);
-            var lightmap = new BABYLON.Texture("assets/light-map-3-4.jpg", scene);
+            var lightmap = new BABYLON.Texture("assets/light-map-3-5.jpg", scene);
             planeMaterial.lightmapTexture = lightmap;
             
+            planeMaterial.diffuseTexture = fireTexture;
+            //planeMaterial.emissiveTexture = noiseTexture2;
+            //planeMaterial.diffuseTexture = noiseTexture;
+            //planeMaterial.emissiveColor = new BABYLON.Color3(0.1, 0.1, 0);
+
+
             var bcMaterial = new BABYLON.StandardMaterial("bcMaterial", scene);
             var bcLightmap = new BABYLON.Texture("assets/bc-tex.jpg", scene);
             bcMaterial.lightmapTexture = bcLightmap;    
@@ -128,7 +158,10 @@
             var vaseMaterial = new BABYLON.StandardMaterial("vasetMaterial", scene);
             var vaseLightmap = new BABYLON.Texture("assets/vase-tex.jpg", scene);
             vaseMaterial.lightmapTexture = vaseLightmap;   
-        
+            
+            var goatMaterial = new BABYLON.StandardMaterial("goatMaterial", scene);
+            var goatLightmap = new BABYLON.Texture("assets/goat-tex2.jpg", scene);
+            goatMaterial.lightmapTexture = goatLightmap; 
         
             mesh_1.material = planeMaterial;
             mesh_2.material = bcMaterial;
@@ -139,9 +172,10 @@
             mesh_7.material = caxarMaterial;
             mesh_8.material = touchMaterial;
             mesh_9.material = vaseMaterial;
+            mesh_10.material = goatMaterial;
             
             //mesh_1.receiveShadows = false;   
-            //task.loadedMeshes[0].useLightmapAsShadowmap = false;
+            //mesh_1.material.useLightmapAsShadowmap = false;
             //task.loadedMeshes[0].lightmapTexture.coordinatesIndex = 1;
 	};
         assetsManager.load();
@@ -159,8 +193,8 @@
         light.position.x = Math.sin(curTime/1000)*5;
     });*/
   
-
-    // Press space to swich lightmap mode
+     light.lightmapMode = BABYLON.Light.LIGHTMAP_SPECULAR;
+     // Press space to swich lightmap mode
     var mode = 0;
     document.onkeydown = (e)=>{
         var keyCode = e.keyCode ? e.keyCode : e.which;
@@ -174,7 +208,7 @@
                 light.lightmapMode = BABYLON.Light.LIGHTMAP_DEFAULT;
             }
         }
-    };  
+    }; 
       
       // Set gravity for the scene (G force like, on Y-axis)
       scene.gravity = new BABYLON.Vector3(0, -0.1, 0);

@@ -1,0 +1,144 @@
+Exporter version: 2.93.4, Blender version: 2.93.2
+========= Conversion from Blender to Babylon.js =========
+	Scene settings used :
+		Inline textures     :  false
+		Material Type       :  PBR
+		Positions Precision :  4
+		Normals Precision   :  3
+		UVs Precision       :  3
+		Vert Color Precision:  3
+		Mat Weight Precision:  2
+		Keep Z-up r-handed  :  no
+		Texture directory   :  /Users/junox/Sites/babjs-template/assets/
+	Python World class constructor completed
+	processing begun of mesh:  Cube.015
+		processing begun of material:  Material.001
+			processing texture bc_tex
+				texture type:  diffuseTexture, mapped using: "UVMap"
+		num positions      :  1498
+		num normals        :  1498
+		num tangents       :  0
+		num uvs            :  2996
+		num uvs2           :  0
+		num colors         :  0
+		num triangles      :  979
+	processing begun of mesh:  Cube.017
+		processing begun of material:  Material.003
+			processing texture pompei_tex
+				texture type:  diffuseTexture, mapped using: "UVMap"
+		num positions      :  3239
+		num normals        :  3239
+		num tangents       :  0
+		num uvs            :  6478
+		num uvs2           :  0
+		num colors         :  0
+		num triangles      :  1871
+	processing begun of mesh:  Cube.018
+		processing begun of material:  Material.004
+			processing texture can_tex
+				texture type:  diffuseTexture, mapped using: "UVMap"
+		num positions      :  1433
+		num normals        :  1433
+		num tangents       :  0
+		num uvs            :  2866
+		num uvs2           :  0
+		num colors         :  0
+		num triangles      :  912
+	processing begun of mesh:  Cube.019
+		processing begun of material:  Material.008
+			processing texture torso_tex2
+				texture type:  diffuseTexture, mapped using: "UVMap"
+		num positions      :  1969
+		num normals        :  1969
+		num tangents       :  0
+		num uvs            :  3938
+		num uvs2           :  0
+		num colors         :  0
+		num triangles      :  1272
+	processing begun of mesh:  Cube.020
+		processing begun of material:  Material.002
+			processing texture infant_tex
+				texture type:  diffuseTexture, mapped using: "UVMap"
+		num positions      :  2606
+		num normals        :  2606
+		num tangents       :  0
+		num uvs            :  5212
+		num uvs2           :  0
+		num colors         :  0
+		num triangles      :  1428
+	processing begun of mesh:  Cube.021
+		processing begun of material:  Material.005
+			processing texture caxar_tex
+				texture type:  diffuseTexture, mapped using: "UVMap"
+		num positions      :  1041
+		num normals        :  1041
+		num tangents       :  0
+		num uvs            :  2082
+		num uvs2           :  0
+		num colors         :  0
+		num triangles      :  756
+	processing begun of mesh:  Cube.022
+		processing begun of material:  Material.006
+			processing texture touch_tex
+				texture type:  diffuseTexture, mapped using: "UVMap"
+		num positions      :  1129
+		num normals        :  1129
+		num tangents       :  0
+		num uvs            :  2258
+		num uvs2           :  0
+		num colors         :  0
+		num triangles      :  860
+	processing begun of mesh:  Cube.023
+		processing begun of material:  Material.007
+			processing texture vase_tex
+				texture type:  diffuseTexture, mapped using: "UVMap"
+		num positions      :  1243
+		num normals        :  1243
+		num tangents       :  0
+		num uvs            :  2486
+		num uvs2           :  0
+		num colors         :  0
+		num triangles      :  864
+	processing begun of mesh:  Cube.024
+		processing begun of material:  Material.009
+			processing texture goat_tex2
+				texture type:  diffuseTexture, mapped using: "UVMap"
+		num positions      :  1478
+		num normals        :  1478
+		num tangents       :  0
+		num uvs            :  2956
+		num uvs2           :  0
+		num colors         :  0
+		num triangles      :  952
+	processing begun of camera (UniversalCamera):  Camera.008
+	processing begun of node:  Empty.008
+	processing begun of mesh:  Cube.016
+		processing begun of material:  Material
+		num positions      :  15434
+		num normals        :  15434
+		num tangents       :  0
+		num uvs            :  30868
+		num uvs2           :  0
+		num colors         :  0
+		num triangles      :  7185
+	processing begun of light (POINT):  Point.008
+	processing begun of light (POINT):  Point.009
+	processing begun of light (POINT):  Point.010
+	processing begun of light (POINT):  Point.011
+	processing begun of light (POINT):  Area.008
+	processing begun of light (POINT):  Light.008
+	processing begun of light (SPOT):  Spot
+========= Writing of JSON file started =========
+	writing mesh:  Cube.015
+	writing mesh:  Cube.017
+	writing mesh:  Cube.018
+	writing mesh:  Cube.019
+	writing mesh:  Cube.020
+	writing mesh:  Cube.021
+	writing mesh:  Cube.022
+	writing mesh:  Cube.023
+	writing mesh:  Cube.024
+	writing mesh:  Cube.016
+========= Writing of JSON file completed =========
+========= end of processing =========
+elapsed time:  0 min, 1.0616 secs
