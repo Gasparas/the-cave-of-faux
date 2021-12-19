@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <title>Babylon Template</title>
+  <script src="https://cdn.babylonjs.com/babylon.js"></script>
+  <script src="https://cdn.babylonjs.com/proceduralTexturesLibrary/babylonjs.proceduralTextures.min.js"></script>
+  <!-- <script src="https://cdn.babylonjs.com/loaders/babylonjs.loaders.min.js"></script>-->
+  <!--<script src="https://cdn.babylonjs.com/loaders/babylon.glTF2FileLoader.js"></script>-->
+
+  <script src="https://code.jquery.com/pep/0.4.3/pep.js"></script>
+  <link rel="stylesheet" href="./css/styles.css">
+</head>
+
+<body>
+
+  <canvas id="renderCanvas" touch-action="none"></canvas> <!-- touch-action="none" for best results from PEP -->
+
+  <script>
+    const canvas = document.getElementById("renderCanvas"); // Get the canvas element
+    const engine = new BABYLON.Engine(canvas, true); // Generate the BABYLON 3D engine
+
+    // Add your code here matching the playground format
+    var createScene = function() {
+      var scene = new BABYLON.Scene(engine);
+
+      // Camera
+      var camera = new BABYLON.FreeCamera("FreeCamera", new BABYLON.Vector3(0, 2, 0), scene);
+      camera.attachControl(canvas, true);
+      camera.rotation.y = Math.PI/-2;
+      camera.speed = 0.8;
+      camera.minZ = 0.5;
+      camera.fov = 1.2;
+      camera.angularSensibility=2500;
+      camera.inertia = 0.5;
+
+      // Camera WASD Controls
+      camera.keysUp.push(87);
+      camera.keysDown.push(83);
+      camera.keysRight.push(68);
+      camera.keysLeft.push(65);
+
+    // Create light
+    var light = new BABYLON.PointLight("light", new BABYLON.Vector3(3, 3, -3), scene);
+    light.intensity = 0;
+
+    //scene.createDefaultEnvironment();
+    //scene.ambientColor = new BABYLON.Color3(1, 1, 1);
+
+    // Import with Asset Manager
+        var assetsManager = new BABYLON.AssetsManager(scene);
+
+        var mesh_names = ["Cube.016", "Cube.015", "Cube.017", "Cube.018", "Cube.019", "Cube.020", "Cube.021", "Cube.022", "Cube.023", "Cube.024"];
+        var meshTask = assetsManager.addMeshTask("mesh", mesh_names, "assets/", "cave-map-3-7.babylon");
+
+	meshTask.onSuccess = function (task) {
+
+            mesh_1 = task.loadedMeshes[9];
+            mesh_2 = task.loadedMeshes[0];
+            mesh_3 = task.loadedMeshes[1];
+            mesh_4 = task.loadedMeshes[2];
+            mesh_5 = task.loadedMeshes[3];
+            mesh_6 = task.loadedMeshes[4];
+            mesh_7 = task.loadedMeshes[5];
+            mesh_8 = task.loadedMeshes[6];
+            mesh_9 = task.loadedMeshes[7];
+            mesh_10 = task.loadedMeshes[8];
+
+	    mesh_1.position = new BABYLON.Vector3(0, 0, 0);
+            mesh_1.checkCollisions = true;
+
+            mesh_2.position = new BABYLON.Vector3(0, 0, 0);
+            mesh_2.checkCollisions = true;
+
+            mesh_3.position = new BABYLON.Vector3(0, 0, 0);
+            mesh_3.checkCollisions = true;
+
+            mesh_4.position = new BABYLON.Vector3(0, 0, 0);
+            mesh_4.checkCollisions = true;
+
+            mesh_5.position = new BABYLON.Vector3(0, 0, 0);
+            mesh_5.checkCollisions = true;
+
+            mesh_6.position = new BABYLON.Vector3(0, 0, 0);
+            mesh_6.checkCollisions = true;
+
+            mesh_7.position = new BABYLON.Vector3(0, 0, 0);
+            mesh_7.checkCollisions = true;
+
+            mesh_8.position = new BABYLON.Vector3(0, 0, 0);
+            mesh_8.checkCollisions = true;
+
+            mesh_9.position = new BABYLON.Vector3(0, 0, 0);
+            mesh_9.checkCollisions = true;
+
+            mesh_10.position = new BABYLON.Vector3(0, 0, 0);
+            mesh_10.checkCollisions = true;
+
+            /*
+            var noiseTexture = new BABYLON.NoiseProceduralTexture("perlin", 512, scene);
+            noiseTexture.brightness = 0.9;
+            noiseTexture.octaves = 7;
+            noiseTexture.persistence =  1;
+            noiseTexture.animationSpeedFactor = 0;
+             */
+
+            var fireTexture = new BABYLON.FireProceduralTexture("fire", 512, scene);
+            fireTexture.autoGenerateTime = false;
+            fireTexture.fireColors = [
+                    new BABYLON.Color3(0.9, 0.9, 0.8),
+                    new BABYLON.Color3(0.9, 0.8, 0.6),
+                    new BABYLON.Color3(0.9, 0.8, 0.6),
+                    new BABYLON.Color3(0.9, 0.8, 0.6),
+                    new BABYLON.Color3(0.9, 0.8, 0.6),
+                    new BABYLON.Color3(0.9, 0.8, 0.6)
+                ];
+
+
+            var planeMaterial = new BABYLON.StandardMaterial("planeMaterial", scene);
+            var lightmap = new BABYLON.Texture("assets/light-map-3-5.jpg", scene);
+            planeMaterial.lightmapTexture = lightmap;
+
+            planeMaterial.diffuseTexture = fireTexture;
+            //planeMaterial.emissiveTexture = noiseTexture2;
+            //planeMaterial.diffuseTexture = noiseTexture;
+            //planeMaterial.emissiveColor = new BABYLON.Color3(0.1, 0.1, 0);
+
+
+            var bcMaterial = new BABYLON.StandardMaterial("bcMaterial", scene);
+            var bcLightmap = new BABYLON.Texture("assets/bc-tex.jpg", scene);
+            bcMaterial.lightmapTexture = bcLightmap;
+
+            var pompeiMaterial = new BABYLON.StandardMaterial("pompeiMaterial", scene);
+            var pompeiLightmap = new BABYLON.Texture("assets/pompei-tex.jpg", scene);
+            pompeiMaterial.lightmapTexture = pompeiLightmap;
+
+            var canMaterial = new BABYLON.StandardMaterial("canMaterial", scene);
+            var canLightmap = new BABYLON.Texture("assets/can-tex.jpg", scene);
+            canMaterial.lightmapTexture = canLightmap;
+
+            var torsoMaterial = new BABYLON.StandardMaterial("torsoMaterial", scene);
+            var torsoLightmap = new BABYLON.Texture("assets/torso-tex2.jpg", scene);
+            torsoMaterial.lightmapTexture = torsoLightmap;
+
+            var infantMaterial = new BABYLON.StandardMaterial("infantMaterial", scene);
+            var infantLightmap = new BABYLON.Texture("assets/infant-tex.jpg", scene);
+            infantMaterial.lightmapTexture = infantLightmap;
+
+            var caxarMaterial = new BABYLON.StandardMaterial("infantMaterial", scene);
+            var caxarLightmap = new BABYLON.Texture("assets/caxar-tex.jpg", scene);
+            caxarMaterial.lightmapTexture = caxarLightmap;
+
+            var touchMaterial = new BABYLON.StandardMaterial("infantMaterial", scene);
+            var touchLightmap = new BABYLON.Texture("assets/touch-tex.jpg", scene);
+            touchMaterial.lightmapTexture = touchLightmap;
+
+            var vaseMaterial = new BABYLON.StandardMaterial("vasetMaterial", scene);
+            var vaseLightmap = new BABYLON.Texture("assets/vase-tex.jpg", scene);
+            vaseMaterial.lightmapTexture = vaseLightmap;
+
+            var goatMaterial = new BABYLON.StandardMaterial("goatMaterial", scene);
+            var goatLightmap = new BABYLON.Texture("assets/goat-tex2.jpg", scene);
+            goatMaterial.lightmapTexture = goatLightmap;
+
+            mesh_1.material = planeMaterial;
+            mesh_2.material = bcMaterial;
+            mesh_3.material = pompeiMaterial;
+            mesh_4.material = canMaterial;
+            mesh_5.material = torsoMaterial;
+            mesh_6.material = infantMaterial;
+            mesh_7.material = caxarMaterial;
+            mesh_8.material = touchMaterial;
+            mesh_9.material = vaseMaterial;
+            mesh_10.material = goatMaterial;
+
+            //mesh_1.receiveShadows = false;
+            //mesh_1.material.useLightmapAsShadowmap = false;
+            //task.loadedMeshes[0].lightmapTexture.coordinatesIndex = 1;
+	};
+        assetsManager.load();
+
+    /*// Create sphere which will cast shadow on floor mesh
+    var sphere = BABYLON.Mesh.CreateSphere("sphere1", 16, 1, scene);
+    sphere.position = new BABYLON.Vector3(-5, 2, 0);
+    var shadowGenerator = new BABYLON.ShadowGenerator(1024, light);
+    shadowGenerator.addShadowCaster(sphere);*/
+
+    /*// Move light in the scene
+    var curTime = 0;
+    scene.onBeforeRenderObservable.add(()=>{
+        curTime+=engine.getDeltaTime();
+        light.position.x = Math.sin(curTime/1000)*5;
+    });*/
+
+     light.lightmapMode = BABYLON.Light.LIGHTMAP_SPECULAR;
+     // Press space to swich lightmap mode
+    var mode = 0;
+    document.onkeydown = (e)=>{
+        var keyCode = e.keyCode ? e.keyCode : e.which;
+        if (keyCode === 32) {
+            mode = ++mode%3;
+            if(mode === 1){
+                light.lightmapMode = BABYLON.Light.LIGHTMAP_SPECULAR;
+            }else if(mode === 2){
+                light.lightmapMode = BABYLON.Light.LIGHTMAP_SHADOWSONLY;
+            }else{
+                light.lightmapMode = BABYLON.Light.LIGHTMAP_DEFAULT;
+            }
+        }
+    };
+
+      // Set gravity for the scene (G force like, on Y-axis)
+      scene.gravity = new BABYLON.Vector3(0, -0.1, 0);
+
+      // Enable Collisions
+      scene.collisionsEnabled = true;
+
+      // Then apply collisions and gravity to the active camera
+      camera.checkCollisions = true;
+      camera.applyGravity = true;
+
+      // Set the ellipsoid around the camera (e.g. your player's size)
+      camera.ellipsoid = new BABYLON.Vector3(1.2, 1, 1.2);
+
+      // Say which mesh will be collisionable
+        //ground.checkCollisions = true;
+        //sphere.checkCollisions = true;
+        //box.checkCollisions = true;
+
+        /********** POINTER LOCK **************************/
+
+    //We start without being locked.
+    var isLocked = false;
+
+    // On click event, request pointer lock
+    scene.onPointerDown = function (evt) {
+
+        //true/false check if we're locked, faster than checking pointerlock on each single click.
+        if (!isLocked) {
+            canvas.requestPointerLock = canvas.requestPointerLock || canvas.msRequestPointerLock || canvas.mozRequestPointerLock || canvas.webkitRequestPointerLock;
+            if (canvas.requestPointerLock) {
+                canvas.requestPointerLock();
+            }
+        }
+
+        evt.preventDefault() ;
+
+        //continue with shooting requests or whatever :P
+        //evt === 0 (left mouse click)
+        //evt === 1 (mouse wheel click (not scrolling))
+        //evt === 2 (right mouse click)
+    };
+
+
+    // Event listener when the pointerlock is updated (or removed by pressing ESC for example).
+    var pointerlockchange = function () {
+        var controlEnabled = document.mozPointerLockElement || document.webkitPointerLockElement || document.msPointerLockElement || document.pointerLockElement || null;
+
+        // If the user is already locked
+        if (!controlEnabled) {
+            //camera.detachControl(canvas);
+            isLocked = false;
+        } else {
+            //camera.attachControl(canvas);
+            isLocked = true;
+        }
+    };
+
+    /**************************************************************/
+
+    // Attach events to the document
+    document.addEventListener("pointerlockchange", pointerlockchange, false);
+    document.addEventListener("mspointerlockchange", pointerlockchange, false);
+    document.addEventListener("mozpointerlockchange", pointerlockchange, false);
+    document.addEventListener("webkitpointerlockchange", pointerlockchange, false);
+
+      return scene;
+    };
+
+    const scene = createScene(); //Call the createScene function
+
+    // Register a render loop to repeatedly render the scene
+    engine.runRenderLoop(function() {
+      scene.render();
+    });
+
+    // Watch for browser/canvas resize events
+    window.addEventListener("resize", function() {
+      engine.resize();
+    });
+  </script>
+
+</body>
+
+</html>
